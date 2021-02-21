@@ -14,7 +14,12 @@
         <div class="card testimonial-card">
 
             <!--Bacground color-->
-            <div class="card-up indigo lighten-1">
+            <div class="card-up">
+                <div class="float-right">
+                    <button class="btn btn-sm btn-success">
+                        Editar mi información <span> <i class="fa fa-edit"></i> </span>
+                    </button>
+                </div>
             </div>
 
             <div class="card-body">

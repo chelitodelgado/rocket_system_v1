@@ -19,11 +19,9 @@
                 <img src="{{ asset('logotipo.png') }}" class="img-fluid mx-auto" alt="">
             </div>
 
-            @empty($empresa)
             <h5 class="indigo-text h5 mb-4">
                 <button id="btn_empresa" type="button" class="btn btn-blue-grey">Agregar informacion de mi empresa</button>
             </h5>
-            @endempty
 
             @foreach ($empresa as $item)
             <div class="card">
@@ -109,7 +107,7 @@
 
                                 <div class="col-md-6">
                                     <label class="m-0">Tipo de usuario:</label>
-                                    <select name="role" id="role" class="form-control m-1">
+                                    <select name="role" id="role" class="select2">
                                         @foreach ($role as $item)
                                         <option value="{{$item->name}}">{{$item->description}}</option>
                                         @endforeach

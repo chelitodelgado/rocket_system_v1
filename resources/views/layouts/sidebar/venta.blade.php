@@ -24,16 +24,16 @@
         </div>
 
         <div class="card-body bg bg-info">
-            <button id="add_venta" class="btn btn-success">Hacer una venta</button>
-            <button id="add_multiventas" class="btn btn-warning">Hacer una multi venta</button>
+            <button id="add_ventas" class="btn btn-warning">Realizar una venta.</button>
             <table id="table_ventas" class="table table-light text-center">
                 <thead class="thead-light">
                     <tr>
+                        <th>Codigo de venta</th>
+                        <th>Unidades</th>
                         <th>Producto</th>
-                        <th>Cantidad</th>
                         <th>Fecha de venta</th>
                         <th>Total</th>
-                        <th>Acción (Solo el admin puede eliminar)</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
             </table>
@@ -42,110 +42,50 @@
     </div>
 
     <!-- Modal Ventas-->
-    <div id="ventasModal" class="modal fade"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div id="ventasModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"  aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header bg bg-light">
-                    <h5 class="modal-title">Agregar una nueva venta</h5>
+                <div class="modal-header bg bg-info">
+                    <h5 class="modal-title">Agregar una venta.</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+
                     <form method="POST" id="ventas_form" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="col-md-12">
-                                <label class="m-0">Producto:</label>
-                                <select name="articulo_id" id="articulo_id" class="form-control">
-                                    <option>Seleccion el producto</option>
-                                    @foreach ($producto as $item)
-                                    <option value="{{$item->id}}">{{$item->nombre}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            {{-- <div class="col-md-6">
-                                <label class="m-0">Codigo del producto:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fas fa-barcode"></i></div>
-                                    </div>
-                                    <input type="text" class="form-control" name="codigo" id="codigo" placeholder="Codigo del producto">
-                                </div>
-                            </div> --}}
-
-                            <div class="col-md-6">
-                                <label class="m-0">Cantidad:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text"><i class="fas fa-hashtag"></i></div>
-                                    </div>
-                                    <input type="number" class="form-control" name="cantidad" id="cantidad" placeholder="Cantidad" required>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <input type="hidden" name="action" id="action" />
-                                <input type="hidden" name="hidden_id" id="hidden_id" />
-                                <input type="submit" name="action_button"
-                                    id="action_button" class="btn btn-warning" value="Agregar" />
-                            </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Ventas-->
-    <div id="multiventasModal" class="modal fade"tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg bg-light">
-                    <h5 class="modal-title">Agregar una nueva venta</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form method="POST" id="multiventas_form" enctype="multipart/form-data">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table id="tabla" class="table table-bordered table-hover dataTable">
+                                <table id="tabla">
                                     <thead>
                                         <tr class="bg bg-gray">
-                                            <th style="width: 60%">Producto</th>
-                                            <th style="width: 40%">Cantidad</th>
-                                            <th style="width: 10%">
-                                                <input type="button" id="add" value="Añadir" class="btn btn-sm btn-primary">
-                                                <button id="add" class="del btn btn-sm btn-primary"> <i class="fa fa-plus"></i> </button>
+                                            <th style="width: 70%"><h5>Producto</h5></th>
+                                            <th style="width: 25%"><h5>Unidades</h5></th>
+                                            <th style="width: 5%">
+                                                {{-- <input type="button" id="add" value="+" class="btn btn-sm btn-primary"> --}}
+                                                <a class="btn btn-sm btn-primary" id="add"><span> <i class="fa fa-plus"></i> </span></a>
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <select name="articulo_id[]" id="articulo_id" class="form-control" >
-                                                    <option>Producto</option>
+                                                <select name='articulo_id[]' id='articulo_id' class="form-control" autofocus required>
+                                                    <option>Seleciona el producto.</option>
                                                     @foreach ($producto as $item)
-                                                    <option value="{{$item->id}}">{{$item->nombre}}</option>
+                                                    <option value="{{ $item->id }}">{{ $item->nombre }}</option>
                                                     @endforeach
                                                 </select>
                                             </td>
+
                                             <td>
                                                 <div class="col-md-12">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <div class="input-group-text"><i class="fas fa-hashtag"></i></div>
                                                         </div>
-                                                        <input type="number" class="form-control" name='cantidad[]' id="cantidad" placeholder="Cantidad" required>
+                                                        <input type="number" class="form-control" name='cantidad[]' id="cantidad" min="1" placeholder="Unidades" required>
                                                     </div>
                                                 </div>
                                             </td>
@@ -156,8 +96,8 @@
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <input type="hidden" name="action" id="action" />
@@ -169,7 +109,9 @@
                                 <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                             </div>
                         </div>
+
                     </form>
+
                 </div>
             </div>
         </div>
@@ -185,8 +127,9 @@
                 "serverSide": true,
                 "ajax": "{{ route('ventas.index') }}",
                 "columns":[
-                    { "data": "nombre" },
+                    { "data": "codigoventa" },
                     { "data": "cantidad" },
+                    { "data": "nombre" },
                     { "data": "created_at"},
                     { "data": "total" ,"render": $.fn.dataTable.render.number( ',', '.', 2, ' $ ' ) },
                     { "data": "action" }
@@ -194,55 +137,50 @@
             });
 
             /* Abrir ventana modal */
-            $('#add_venta').click(function(){
+            $('#add_ventas').click(function(){
                 $('#ventas_form')[0].reset();
-                $('.modal-title').text("Agregar una nueva venta");
+                $('.modal-title').text("Realizar una venta.");
                 $('#action_button').val("Agregar");
                 $('#action').val("Agregar");
                 $('#ventasModal').modal('show');
             });
 
-
-
-
-            /* Abrir ventana modal */
-            $('#add_multiventas').click(function(){
-                $('#multiventas_form')[0].reset();
-                $('.modal-title').text("Agregar una multi venta");
-                $('#action_button').val("Agregar");
-                $('#action').val("Agregar");
-                $('#multiventasModal').modal('show');
-            });
-
-            /* Add column with */
-
             /**
             * Funcion para añadir una nueva fila en la tabla
             */
-            $("#add").click(function(){
-			var nuevaFila="<tr> \
-				<td><select name='articulo_id[]' id='articulo_id' required class='form-control'><option>Selecciona ...</option>@foreach ($producto as $item)<option value='{{ $item->id }}''>{{ $item->nombre }}</option>@endforeach</select></td> \
-				<td><input type='number' name='cantidad[]' required class='form-control'></td> \
-				<td><button class='del btn btn-sm btn-danger'> <i class='fa fa-trash'></i> </button></td> \
-                </tr>";
-                $("#tabla tbody").append(nuevaFila);
+            $("#add").click(function(e){
+
+                $('#tabla').append(
+                    "<tr> \
+                    <td>\
+                        <select name='articulo_id[]' id='articulo_id' class='form-control'>\
+                            <option>Selecciona el producto.</option>\
+                            @foreach ($producto as $item)\
+                            <option value='{{ $item->id }}'>{{ $item->nombre }}</option>\
+                            @endforeach\
+                        </select>\
+                    </td>\
+                    <td>\
+                        <div class='col-md-12'>\
+                            <div class='input-group'>\
+                                <div class='input-group-prepend'>\
+                                    <div class='input-group-text'><i class='fas fa-hashtag'></i></div>\
+                                </div>\
+                                <input type='number' id='cantidad' name='cantidad[]' class='form-control' min='1' placeholder='Unidades' required>\
+                            </div>\
+                        </div>\
+                    </td>\
+                    <td><button class='del btn btn-sm btn-danger'> <i class='fa fa-trash'></i> </button></td> \
+                    </tr>"
+                );
+
             });
 
             // evento para eliminar la fila
             $("#tabla").on("click", ".del", function(){
                 $(this).parents("tr").remove();
             });
-
             /* Fin */
-
-
-
-
-
-
-
-
-
 
             // Agregar nuevo empleado y actualizar
             $('#ventas_form').on('submit', function(event){
@@ -259,21 +197,25 @@
                         dataType: "json",
                         success:function(data){
 
-                            if(data.errors){
+                            if( data.errors ) {
 
-                                for(var count = 0; count < data.errors.length; count++){
-                                    Swal.fire({
+                                Swal.fire({
                                     icon: 'error',
                                     title: 'Oops...',
-                                    footer: '<p>'+data.errors[count]+'</p>'
-                                    })
-                                }
+                                    footer: '<p>'+data.errors+'</p>'
+                                })
                             }
-                            if(data.success){
+                            if( data.stock ) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: data.stock +' '+' Disponibles',
+                                })
+                            }
+                            if( data.success ) {
 
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Venta concretada correctamente.',
+                                    title: data.success,
                                     showConfirmButton: false,
                                     timer: 1500
                                 })
@@ -340,7 +282,6 @@
 
             /* Eliminar */
             var venta_id;
-
             $(document).on('click', '.delete', function(){
 
                 venta_id = $(this).attr('id');
@@ -361,14 +302,14 @@
                                 })
                             }
                         })
-                        Swal.fire('Eliminación completada!', '', 'success')
+
                     }
                 })
 
             })
 
-
         });
+
     </script>
 
 @endsection

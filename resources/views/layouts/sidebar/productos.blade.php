@@ -1,14 +1,9 @@
 @extends('master.app')
-
 @section('title', '- Productos')
-
 @section('sidebar')
     @parent
-
 @endsection
-
 @section('content')
-
 @yield('content')
 
     <div class="container-fluid mt-5">
@@ -16,7 +11,7 @@
         <div class="card mb-4 wow fadeIn animated" style="visibility: visible; animation-name: fadeIn;">
             <div class="card-body d-sm-flex justify-content-between">
                 <h4 class="mb-2 mb-sm-0 pt-1">
-                    <a href="#">Inicio</a>
+                    <a href="{{ '/home' }}">Inicio</a>
                     <span>/</span>
                     <span>Productos</span>
                 </h4>
@@ -29,6 +24,7 @@
                 Generar reporte Pdf
             </button>
         </p>
+
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
                 <a href="{{ route('reportes.pdf') }}" class="btn btn-info btn-sm " style="width: 160px">
@@ -126,7 +122,7 @@
 
                             <div class="col-md-12">
                                 <label class="m-0">Categoria:</label>
-                                <select name="categoria_id" id="categoria_id" class="form-control m-1">
+                                <select name="categoria_id" id="categoria_id" class="select2">
                                     <option>Seleccione una categoria</option>
                                     @foreach ($categoria as $item)
                                     <option value="{{ $item->id }}" >{{ $item->nombre }}</option>
@@ -136,7 +132,7 @@
 
                             <div class="col-md-12">
                                 <label class="m-0">Proveedor:</label>
-                                <select name="proveedor_id" id="proveedor_id" class="form-control m-1">
+                                <select name="proveedor_id" id="proveedor_id" class="select2">
                                     <option>Seleccione un proveedor</option>
                                     @foreach ($proveedor as $item)
                                     <option value="{{ $item->id }}" >{{ $item->nombre }} -- {{ $item->giro }} </option>
@@ -168,18 +164,34 @@
 
         $(document).ready( function() {
 
+            // TODO: Render para limitar el numero de caracteres de un campo en espesifico.
+            $.fn.dataTable.render.ellipsis = function ( cutoff ) {
+                return function ( data, type, row ) {
+                    if ( type === 'display' ) {
+                        var str = data.toString(); // cast numbers
+
+                        return str.length < cutoff ?
+                            str :
+                            str.substr(0, cutoff-1) +'&#8230;';
+                    }
+
+                    // Search, order and type can use the original data
+                    return data;
+                };
+            };
+
             // Rellenar la tabla de producto
             $("#table_producto").DataTable({
                 "processing": true,
                 "serverSide": true,
                 "ajax": "{{ route('producto.index') }}",
                 "columns":[
-                    { "data": "nombre" },
-                    { "data": "descripcion" },
+                    { "data": "nombre", "render": $.fn.dataTable.render.ellipsis( 30 )},
+                    { "data": "descripcion", "render": $.fn.dataTable.render.ellipsis( 35 ) },
                     { "data": "codigo" },
                     { "data": "precio_unitario","render": $.fn.dataTable.render.number( ',', '.', 2, ' $ ' ) },
                     { "data": "precio_venta" ,"render": $.fn.dataTable.render.number( ',', '.', 2, ' $ ' ) },
-                    { "data": "stock","render": $.fn.dataTable.render.number( ',', '.', 2, ' # ' ) },
+                    { "data": "stock","render": $.fn.dataTable.render.number( '', '', '', ' # ' ) },
                     { "data": "action" }
                 ]
             });
@@ -212,9 +224,9 @@
 
                                 for(var count = 0; count < data.errors.length; count++){
                                     Swal.fire({
-                                    icon: 'error',
-                                    title: 'Oops...',
-                                    footer: '<p>'+data.errors[count]+'</p>'
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        footer: '<p>'+data.errors[count]+'</p>'
                                     })
                                 }
                             }
@@ -271,7 +283,7 @@
 
             $(document).on('click', '.edit', function(){
                 var id = $(this).attr('id');
-                console.log(id);
+                // console.log(id);
                 $.ajax({
                     url:"producto/"+id+"/edit",
                     dataType:"json",
@@ -324,6 +336,13 @@
                 })
             });
 
+            $(document).on('click', '.details', function() {
+
+                var id = $(this).attr('id');
+                console.log(id);
+                Swal.fire('Ver mas!', 'Ver mas detalles del producto ID: ' + id, 'question');
+
+            });
 
         });
 

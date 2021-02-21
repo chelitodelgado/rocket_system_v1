@@ -7,7 +7,7 @@
 ## Antes de comenzar
 
 ### Ejecutar el siguiente comando en la terminal para actualizar los repositorio de laravel con composer: 
-    $ `composer update`
+    $ composer update
 
 ### Configurar la base de datos en el archivo .env
 
@@ -21,6 +21,6 @@ DB_PASSWORD="Contraseña de no tener dejar vacio"
 ```
 
 ### Generar las llaves correspondientes al proyecto ejecutando:
-    $ `php artisan key:generate`
+    $ php artisan key:generate
 ### Crear las migraciones y los seeder a la base de datos de Mysql:
-    $ `php artisan migrate:refresh --seed`
+    $ php artisan migrate:refresh --seed

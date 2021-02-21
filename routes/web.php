@@ -44,13 +44,18 @@ Route::get('/proveedor/destroy/{id}', 'sidebar\ProveedorController@destroy');
 // <-- Rutas Productos -->
 Route::resource('/producto', 'sidebar\ProductoController');
 Route::post('/producto/update', 'sidebar\ProductoController@update')->name('producto.update');
-Route::get('/producto/destroy/{id}', 'sidebar\ProductoController@destroy');
 
+Route::get('/producto/destroy/{id}', 'sidebar\ProductoController@destroy');
+//<-- Generar PDF -->
 Route::get('/producto/pdf', 'sidebar\ProductoController@exportPdf')->name('reportes.pdf');
+// <-- Detalles del producto -->
+Route::get('/producto/detalles', 'sidebar\ProductController@show');
 
 // <-- Rutas Ventas -->
 Route::resource('/ventas', 'sidebar\VentasController');
 Route::post('/ventas/update', 'sidebar\VentasController@update')->name('ventas.update');
 Route::get('/ventas/destroy/{id}', 'sidebar\VentasController@destroy');
+Route::get('ventas/select',        'sidebar\VentasController@fullSelect');
+Route::get('ventas',        'sidebar\VentasController@getChart')->name('ventas.getChart');
 
 

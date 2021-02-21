@@ -15,6 +15,7 @@ class CreateVentasTable extends Migration
     {
         Schema::create('ventas', function (Blueprint $table) {
             $table->id();
+            $table->string('codigoventa');
             $table->integer('cantidad');
             $table->decimal('total',8,2);
             $table->unsignedBigInteger('articulo_id');

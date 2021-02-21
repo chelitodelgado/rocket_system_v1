@@ -1,14 +1,9 @@
 @extends('master.app')
-
 @section('title', '- Categorias')
-
 @section('sidebar')
     @parent
-
 @endsection
-
 @section('content')
-
 @yield('content')
 
     <div class="container-fluid mt-5">
@@ -216,9 +211,9 @@
                         $.ajax({
                             url: 'categoria/destroy/'+categoria_id,
                             success:function(data){
-                            $('#table_categoria').DataTable().ajax.reload();
-                            Swal.fire('Categoria eliminado!', '', 'success');
-                        }
+                                $('#table_categoria').DataTable().ajax.reload();
+                                Swal.fire('Categoria eliminado!', '', 'success');
+                            }
                         });
                     } else if (result.isDenied) {
                         Swal.fire('Estas seguro de no guardar', '', 'info')

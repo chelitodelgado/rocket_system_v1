@@ -10,6 +10,7 @@ class Ventas extends Model
     protected $table= 'ventas';
 
     protected $fillable = [
+        'codigoventa',
         'cantidad',
         'total',
         'articulo_id',

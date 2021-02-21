@@ -20,9 +20,8 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+
         $categoria = Categoria::latest()->get();
         $proveedor = Proveedor::latest()->get();
 
@@ -30,13 +29,17 @@ class ProductoController extends Controller
 
             return datatables()->of(Producto::latest()->get())
                 ->addColumn('action', function ($data) {
-                    $button = '<a style="cursor:pointer"
-                    name="edit" id="' . $data->id . '"
-                    class="edit btn btn-sm btn-warning"><i class="fa fa-edit"></i></a> ';
+                    $button = '<a style="cursor:pointer; color: #00C851;"
+                    role="button" name="edit" id="' . $data->id . '"
+                    class="edit"><i class="fa fa-edit"></i></a> ';
                     $button .= '&nbsp;&nbsp;';
-                    $button .= '<a style="cursor:pointer"
+                    $button .= '<a style="cursor:pointer; color: #FF3547"
                     name="delete" id="' . $data->id . '"
-                    class="delete btn btn-sm btn-danger"><i class="fa fa-trash"></i></a> ';
+                    class="delete"><i class="fa fa-trash"></i></a> ';
+                    $button .= '&nbsp;&nbsp;';
+                    $button .= '<a style="cursor:pointer; color:#3b5998;"
+                    name="details" id="' . $data->id . '"
+                    class="details"><i class="fa fa-eye"></i></a> ';
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -55,13 +58,9 @@ class ProductoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {}
 
-    }
-
-    public function exportPdf()
-    {
+    public function exportPdf() {
         /* $dompdf = App::make("pdfs.pdfproducto");
         $dompdf->loadView();
         return $dompdf->stream(); */
@@ -124,9 +123,13 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show() {
+            $id = 3;
+            $data = Producto::findOrFail($id);
+            return view('layouts.sidebar.showProduct',[
+                'data' => $data
+            ]);
+
     }
 
     /**
@@ -135,8 +138,7 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         // Busqueda de la categoria por id
         if ( request()->ajax() ) {
             $data = Producto::findOrFail($id);
@@ -151,9 +153,8 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    {
-        //
+    public function update(Request $request) {
+
         $user = \Auth::user();
         $id = $user->id;
 
@@ -200,8 +201,7 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         // Eliminando la categori por id
         $data = Producto::findOrFail($id);
         $data->delete();
